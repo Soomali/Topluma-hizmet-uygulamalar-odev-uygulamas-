@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:thu_yemek_app/engine/food.dart';
 import 'package:thu_yemek_app/engine/game_state.dart';
 
+import 'game_event.dart';
+
 abstract class GameEngine extends ChangeNotifier {
   GameState get state;
-  void foodSelected(Food food);
+  void foodSelected(FoodSelectedEvent event);
 }
 
 class NormalGameEngine extends GameEngine {
@@ -15,8 +17,8 @@ class NormalGameEngine extends GameEngine {
   GameState get state => _state;
 
   @override
-  void foodSelected(Food food) {
-    if (food.isHealthy && !state.isFinished) {
+  void foodSelected(FoodSelectedEvent event) {
+    if (event.change.isHealthy && !state.isFinished) {
       _state = _state.copyWith(points: _state.points + 1);
     }
   }
@@ -34,8 +36,8 @@ class TimedGameEngine extends GameEngine {
   GameState get state => _state;
 
   @override
-  void foodSelected(Food food) {
-    if (food.isHealthy && !state.isFinished) {
+  void foodSelected(FoodSelectedEvent event) {
+    if (event.change.isHealthy && !state.isFinished) {
       _state = _state.copyWith(points: _state.points + 1);
     }
   }
