@@ -1,16 +1,25 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:thu_yemek_app/engine/food.dart';
 import 'package:thu_yemek_app/engine/game_state.dart';
 
 abstract class GameEngine extends ChangeNotifier {
   GameState get state;
+  void foodSelected(Food food);
 }
 
 class NormalGameEngine extends GameEngine {
-  GameState _state = NormalGameState(0, false);
+  NormalGameState _state = NormalGameState(0, false);
   @override
   GameState get state => _state;
+
+  @override
+  void foodSelected(Food food) {
+    if (food.isHealthy && !state.isFinished) {
+      _state = _state.copyWith(points: _state.points + 1);
+    }
+  }
 }
 
 class TimedGameEngine extends GameEngine {
@@ -23,6 +32,13 @@ class TimedGameEngine extends GameEngine {
 
   @override
   GameState get state => _state;
+
+  @override
+  void foodSelected(Food food) {
+    if (food.isHealthy && !state.isFinished) {
+      _state = _state.copyWith(points: _state.points + 1);
+    }
+  }
 
   void start() {
     if (timeStream != null) {
@@ -62,7 +78,7 @@ class TimedGameEngine extends GameEngine {
 
   Stream<int> timer() async* {
     for (int i = 0; i <= timeLimit; i++) {
-      await Future.delayed(Duration(milliseconds: 100));
+      await Future.delayed(const Duration(seconds: 1));
       yield i;
     }
   }
