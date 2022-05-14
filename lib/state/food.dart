@@ -5,7 +5,7 @@ const List<String> healthyFoods = [
   'brokoli',
   'elma',
   'havuc',
-  'portakal suyu',
+  'portakal_suyu',
   'salata'
 ];
 const List<String> unhealthyFoods = [
@@ -29,8 +29,8 @@ class Food {
         isHealthy ? random.pick(healthyFoods) : random.pick(unhealthyFoods);
     return Food(
         isHealthy: isHealthy,
-        name: foodName,
-        photoPath: 'assets/${foodName.replaceAll('_', ' ')}.jpeg');
+        name: foodName.replaceAll('_', ' '),
+        photoPath: 'assets/${foodName}.jpeg');
   }
 }
 

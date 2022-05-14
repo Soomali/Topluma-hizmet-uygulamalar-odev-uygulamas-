@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:thu_yemek_app/state/ui_state.dart' as ui_state;
@@ -37,8 +38,11 @@ class TimedGameEngine extends GameEngine {
 
   @override
   void foodSelected(FoodSelectedEvent event) {
+    log('food selected on game engine.');
+    start();
     if (event.change.isHealthy && !state.isFinished) {
       _state = _state.copyWith(points: _state.points + 1);
+      notifyListeners();
     }
   }
 
@@ -47,6 +51,7 @@ class TimedGameEngine extends GameEngine {
       return;
     }
     timeStream = timer().listen((event) {
+      log('game engine clock runs.');
       final remainingTime = timeLimit - event;
       _state = _state.copyWith(
           remainingTime: remainingTime, isFinished: remainingTime <= 0);
@@ -80,8 +85,8 @@ class TimedGameEngine extends GameEngine {
 
   Stream<int> timer() async* {
     for (int i = 0; i <= timeLimit; i++) {
-      await Future.delayed(const Duration(seconds: 1));
       yield i;
+      await Future.delayed(const Duration(milliseconds: 1000));
     }
   }
 }

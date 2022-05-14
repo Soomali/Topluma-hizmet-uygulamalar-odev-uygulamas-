@@ -1,4 +1,5 @@
-import 'dart:math';
+import 'dart:developer';
+import 'dart:math' hide log;
 import 'package:flutter/material.dart';
 
 part 'food.dart';

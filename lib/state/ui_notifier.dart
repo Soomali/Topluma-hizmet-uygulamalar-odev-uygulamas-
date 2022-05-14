@@ -10,34 +10,65 @@ class UINotifier extends ChangeNotifier {
     } else if (event is _AnimationEndedEvent) {
       _onAnimationEnd();
     } else if (event is FoodSelectedEvent) {
-      _onFoodSelected();
+      if (!state.isFinished) {
+        _onFoodSelected(event);
+      }
     } else if (event is FoodRefreshEvent) {
-      _onFoodRefresh();
+      if (!state.isFinished) {
+        _onFoodRefresh();
+      }
+    } else if (event is GameEndedEvent) {
+      _onGameEnded();
+    } else if (event is GameRestartEvent) {
+      _onGameRestart();
     } else {
       throw 'Unknown event ${event.runtimeType} for UINotifier.';
     }
   }
 
-  void _onFoodRefresh() {
-    _state = _state.copyWith(foods: createFoodPair());
+  void _onGameRestart() {
+    _state = _state.copyWith(isFinished: false);
     notifyListeners();
+    Future.delayed(Duration(milliseconds: 120))
+        .then((value) => update(FoodRefreshEvent()));
+  }
+
+  void _onGameEnded() {
+    _state = _state.copyWith(isFinished: true);
+    notifyListeners();
+  }
+
+  void _onFoodRefresh() {
+    _state = _state.copyWith(
+        foods: createFoodPair(before: _state.foods), selectedFood: null);
+    notifyListeners();
+    log('food refreshed');
   }
 
   void _onAnimationStart(AnimationStartedEvent event) {
-    _state = _state.copyWith(canSelectFood: false, isAnimating: true);
+    _state = _state.copyWith(
+        canSelectFood: false,
+        isAnimating: true,
+        selectedFood: _state.selectedFood);
     notifyListeners();
     Future.delayed(Duration(milliseconds: event.animationMillis))
-        .then((value) => update(_AnimationEndedEvent()));
+        .then((_) => update(_AnimationEndedEvent()));
   }
 
   void _onAnimationEnd() {
-    _state = _state.copyWith(canSelectFood: true, isAnimating: false);
+    _state = _state.copyWith(
+        canSelectFood: true,
+        isAnimating: false,
+        selectedFood: _state.selectedFood);
     notifyListeners();
-    update(FoodRefreshEvent());
+    Future.delayed(Duration(milliseconds: 150))
+        .then((_) => update(FoodRefreshEvent()));
   }
 
-  void _onFoodSelected() {
-    _state = _state.copyWith(canSelectFood: false);
+  void _onFoodSelected(FoodSelectedEvent event) {
+    _state = _state.copyWith(canSelectFood: false, selectedFood: event.food);
     notifyListeners();
+    log('food selected');
+    update(AnimationStartedEvent(300));
   }
 }
