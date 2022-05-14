@@ -3,8 +3,11 @@ import 'food.dart';
 class UIState {
   bool canSelectFood;
   List<Food> foods;
-  UIState(this.canSelectFood, this.foods);
-  UIState copyWith({bool? canSelectFood, List<Food>? foods}) {
-    return UIState(canSelectFood ?? this.canSelectFood, foods ?? this.foods);
+  bool isAnimating;
+  UIState(this.canSelectFood, this.foods, this.isAnimating);
+  UIState copyWith(
+      {bool? canSelectFood, List<Food>? foods, bool? isAnimating}) {
+    return UIState(canSelectFood ?? this.canSelectFood, foods ?? this.foods,
+        isAnimating ?? this.isAnimating);
   }
 }
