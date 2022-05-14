@@ -1,8 +1,10 @@
+part of 'ui_state.dart';
+
 abstract class UIEvent {}
 
 class FoodSelectedEvent extends UIEvent {}
 
-class AnimationEndedEvent extends UIEvent {}
+class _AnimationEndedEvent extends UIEvent {}
 
 class AnimationStartedEvent extends UIEvent {
   int animationMillis;

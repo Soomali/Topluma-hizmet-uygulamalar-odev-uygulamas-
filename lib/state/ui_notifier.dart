@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:thu_yemek_app/state/event.dart';
-import 'package:thu_yemek_app/state/state.dart';
-import 'package:thu_yemek_app/state/utils.dart';
-
-import 'food.dart';
+part of 'ui_state.dart';
 
 class UINotifier extends ChangeNotifier {
   UIState _state = UIState(true, createFoodPair(), false);
@@ -12,7 +7,7 @@ class UINotifier extends ChangeNotifier {
   void update(UIEvent event) {
     if (event is AnimationStartedEvent) {
       onAnimationStart();
-    } else if (event is AnimationEndedEvent) {
+    } else if (event is _AnimationEndedEvent) {
       onAnimationEnd();
     } else if (event is FoodSelectedEvent) {
       onFoodSelected();

@@ -3,7 +3,7 @@ abstract class GameState {
   int? get remainingTime;
   bool isFinished;
   GameState(this.points, this.isFinished);
-  GameState copyWith();
+  GameState copyWith({int? points, bool? isFinished});
 }
 
 class NormalGameState extends GameState {

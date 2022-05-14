@@ -1,4 +1,4 @@
-import 'food.dart';
+part of 'ui_state.dart';
 
 List<Food> createFoodPair() {
   final isHealthy = random.nextBool();
