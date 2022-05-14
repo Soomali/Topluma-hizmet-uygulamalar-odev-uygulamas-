@@ -1,4 +1,4 @@
-import 'dart:math';
+part of 'ui_state.dart';
 
 const List<String> healthyFoods = [
   'armut',

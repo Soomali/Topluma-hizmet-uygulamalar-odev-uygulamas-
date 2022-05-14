@@ -1,4 +1,4 @@
-import 'package:thu_yemek_app/state/food.dart';
+import 'package:thu_yemek_app/state/ui_state.dart';
 
 import 'game_state.dart';
 

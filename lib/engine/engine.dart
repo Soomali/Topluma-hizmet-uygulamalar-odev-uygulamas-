@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:thu_yemek_app/state/food.dart';
+import 'package:thu_yemek_app/state/ui_state.dart' as ui_state;
 import 'package:thu_yemek_app/engine/game_state.dart';
 
 import 'game_event.dart';
