@@ -73,6 +73,18 @@ flutter:
     - assets/pizza.jpeg
     - assets/portakal_suyu.jpeg
     - assets/salata.jpeg
+    - assets/badem.jpeg
+    - assets/balık.jpeg
+    - assets/biftek.jpeg
+    - assets/ceviz.jpeg
+    - assets/donut.jpeg
+    - assets/lokma.jpeg
+    - assets/margarin.jpeg
+    - assets/nohut.jpeg
+    - assets/salam.jpeg
+    - assets/sosis.jpeg
+    - assets/süt.jpeg
+    - assets/yumurta.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

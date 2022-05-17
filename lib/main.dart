@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:thu_yemek_app/engine/engine.dart';
@@ -52,16 +54,18 @@ class MainBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final state = context.watch<UINotifier>().state;
     return AnimatedContainer(
-      duration: Duration(milliseconds: 150),
+      duration: Duration(milliseconds: UINotifier.animationMillis),
       color: state.isAnimating
           ? state.selectedFood!.isHealthy
               ? Colors.green
               : Colors.red
           : Colors.white,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          TimerWidget(),
+          SizedBox(
+              height: MediaQuery.of(context).size.height * .2,
+              child: TimerWidget()),
           FoodRow(),
         ],
       ),
@@ -81,16 +85,16 @@ class FoodRow extends StatelessWidget {
           AnimatedPositioned(
               left: MediaQuery.of(context).size.width * .05,
               top: value.state.isAnimating
-                  ? MediaQuery.of(context).size.height * 1
-                  : 10,
-              duration: Duration(milliseconds: 250),
+                  ? MediaQuery.of(context).size.height * .8
+                  : MediaQuery.of(context).size.height * .15,
+              duration: Duration(milliseconds: UINotifier.animationMillis),
               child: FoodWidget(food: value.state.foods.first)),
           AnimatedPositioned(
               left: MediaQuery.of(context).size.width * .5,
               top: value.state.isAnimating
-                  ? MediaQuery.of(context).size.height * -1
-                  : 10,
-              duration: Duration(milliseconds: 250),
+                  ? MediaQuery.of(context).size.height * -.8
+                  : MediaQuery.of(context).size.height * .15,
+              duration: Duration(milliseconds: UINotifier.animationMillis),
               child: FoodWidget(food: value.state.foods.last)),
         ]),
       ),
@@ -106,8 +110,39 @@ class TimerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<TimedGameEngine>(builder: (context, value, child) {
-      return Text(
-          'kalan zaman:${value.state.remainingTime} sn, puan ${value.state.points}');
+      final val = ((60 - (value.state.remainingTime ?? 0)) / 60);
+      log('$val');
+      return Column(
+        children: [
+          Expanded(
+            child: Stack(children: [
+              Positioned(
+                top: MediaQuery.of(context).size.height * .05,
+                left: MediaQuery.of(context).size.width * .35,
+                height: MediaQuery.of(context).size.width * .3,
+                width: MediaQuery.of(context).size.width * .3,
+                child: CircularProgressIndicator(
+                  strokeWidth: 6,
+                  value: 1 - val,
+                ),
+              ),
+              Positioned(
+                  top: MediaQuery.of(context).size.height * .05 +
+                      MediaQuery.of(context).size.width * .15 -
+                      14,
+                  left: MediaQuery.of(context).size.width * .5 - 14,
+                  child: Text(
+                    '${value.state.remainingTime}',
+                    style: TextStyle(fontSize: 24),
+                  )),
+            ]),
+          ),
+          Text(
+            '${value.state.points}',
+            style: TextStyle(color: Colors.greenAccent, fontSize: 20),
+          )
+        ],
+      );
     });
   }
 }

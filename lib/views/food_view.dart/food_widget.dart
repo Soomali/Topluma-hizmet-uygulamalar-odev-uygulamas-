@@ -36,7 +36,7 @@ class FoodWidget extends StatelessWidget {
                     fit: BoxFit.fill,
                     image: AssetImage(food.photoPath))),
             width: MediaQuery.of(context).size.width * 0.4,
-            height: MediaQuery.of(context).size.height * .4,
+            height: MediaQuery.of(context).size.height * .3,
           ),
           Text(
             food.name,

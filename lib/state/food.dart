@@ -6,7 +6,14 @@ const List<String> healthyFoods = [
   'elma',
   'havuc',
   'portakal_suyu',
-  'salata'
+  'salata',
+  'badem',
+  'yumurta',
+  'balık',
+  'biftek',
+  'ceviz',
+  'nohut',
+  'süt',
 ];
 const List<String> unhealthyFoods = [
   'baklava',
@@ -16,6 +23,11 @@ const List<String> unhealthyFoods = [
   'lolipop',
   'milkshake',
   'pizza',
+  'margarin',
+  'sosis',
+  'salam',
+  'donut',
+  'lokma',
 ];
 final Random random = Random();
 

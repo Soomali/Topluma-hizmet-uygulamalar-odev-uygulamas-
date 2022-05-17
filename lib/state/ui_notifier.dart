@@ -4,6 +4,7 @@ class UINotifier extends ChangeNotifier {
   UIState _state = UIState(true, createFoodPair(), false);
   UIState get state => _state;
 
+  static const int animationMillis = 210;
   void update(UIEvent event) {
     if (event is AnimationStartedEvent) {
       _onAnimationStart(event);
@@ -29,7 +30,7 @@ class UINotifier extends ChangeNotifier {
   void _onGameRestart() {
     _state = _state.copyWith(isFinished: false);
     notifyListeners();
-    Future.delayed(Duration(milliseconds: 120))
+    Future.delayed(Duration(milliseconds: animationMillis ~/ 4))
         .then((value) => update(FoodRefreshEvent()));
   }
 
@@ -40,7 +41,8 @@ class UINotifier extends ChangeNotifier {
 
   void _onFoodRefresh() {
     _state = _state.copyWith(
-        foods: createFoodPair(before: _state.foods), selectedFood: null);
+        foods: createFoodPair(before: _state.foods),
+        selectedFood: _state.selectedFood);
     notifyListeners();
     log('food refreshed');
   }
@@ -53,22 +55,20 @@ class UINotifier extends ChangeNotifier {
     notifyListeners();
     Future.delayed(Duration(milliseconds: event.animationMillis))
         .then((_) => update(_AnimationEndedEvent()));
+    Future.delayed(Duration(milliseconds: event.animationMillis ~/ 2))
+        .then((_) => update(FoodRefreshEvent()));
   }
 
   void _onAnimationEnd() {
     _state = _state.copyWith(
-        canSelectFood: true,
-        isAnimating: false,
-        selectedFood: _state.selectedFood);
+        canSelectFood: true, isAnimating: false, selectedFood: null);
     notifyListeners();
-    Future.delayed(Duration(milliseconds: 150))
-        .then((_) => update(FoodRefreshEvent()));
   }
 
   void _onFoodSelected(FoodSelectedEvent event) {
     _state = _state.copyWith(canSelectFood: false, selectedFood: event.food);
     notifyListeners();
     log('food selected');
-    update(AnimationStartedEvent(300));
+    update(AnimationStartedEvent(animationMillis * 2));
   }
 }

@@ -40,8 +40,13 @@ class TimedGameEngine extends GameEngine {
   void foodSelected(FoodSelectedEvent event) {
     log('food selected on game engine.');
     start();
-    if (event.change.isHealthy && !state.isFinished) {
-      _state = _state.copyWith(points: _state.points + 1);
+    if (!state.isFinished) {
+      _state = _state.copyWith(
+          points: event.change.isHealthy
+              ? _state.points + 1
+              : _state.points == 0
+                  ? 0
+                  : _state.points - 1);
       notifyListeners();
     }
   }
