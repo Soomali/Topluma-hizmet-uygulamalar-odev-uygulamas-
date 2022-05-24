@@ -10,10 +10,10 @@ const List<String> healthyFoods = [
   'badem',
   'yumurta',
   'balık',
-  'biftek',
   'ceviz',
   'nohut',
   'süt',
+  'haşlanmış_tavuk',
 ];
 const List<String> unhealthyFoods = [
   'baklava',

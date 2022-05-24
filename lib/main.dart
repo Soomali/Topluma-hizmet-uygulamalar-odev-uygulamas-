@@ -31,6 +31,25 @@ class MyApp extends StatelessWidget {
               update: (context, value, notifier) {
                 if (value.state.isFinished) {
                   uINotifier.update(GameEndedEvent());
+                  Future.delayed(Duration(milliseconds: 150), () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text(
+                                'Oyun bitti! toplamda ${value.state.points} puan kazandın.'),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    uINotifier.update(GameRestartEvent());
+                                    value.restart();
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Tekrar başla'))
+                            ],
+                          );
+                        });
+                  });
                 }
                 return uINotifier;
               },
@@ -55,7 +74,7 @@ class MainBody extends StatelessWidget {
     final state = context.watch<UINotifier>().state;
     return AnimatedContainer(
       duration: Duration(milliseconds: UINotifier.animationMillis),
-      color: state.isAnimating
+      color: state.isAnimating || state.selectedFood != null
           ? state.selectedFood!.isHealthy
               ? Colors.green
               : Colors.red
@@ -66,6 +85,11 @@ class MainBody extends StatelessWidget {
           SizedBox(
               height: MediaQuery.of(context).size.height * .2,
               child: TimerWidget()),
+          SizedBox(height: 20),
+          Text(
+            'Sağlıklı Yemeği Seç!',
+            style: TextStyle(fontSize: 20, color: Colors.greenAccent.shade400),
+          ),
           FoodRow(),
         ],
       ),
@@ -111,7 +135,6 @@ class TimerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<TimedGameEngine>(builder: (context, value, child) {
       final val = ((60 - (value.state.remainingTime ?? 0)) / 60);
-      log('$val');
       return Column(
         children: [
           Expanded(

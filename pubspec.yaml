@@ -35,6 +35,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   provider: ^6.0.2
+  vibration: ^1.7.4-nullsafety.0
 
 dev_dependencies:
   flutter_test:
@@ -75,7 +76,7 @@ flutter:
     - assets/salata.jpeg
     - assets/badem.jpeg
     - assets/balık.jpeg
-    - assets/biftek.jpeg
+    - assets/haşlanmış_tavuk.jpeg
     - assets/ceviz.jpeg
     - assets/donut.jpeg
     - assets/lokma.jpeg

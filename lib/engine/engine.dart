@@ -4,12 +4,13 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:thu_yemek_app/state/ui_state.dart' as ui_state;
 import 'package:thu_yemek_app/engine/game_state.dart';
-
+import 'package:vibration/vibration.dart';
 import 'game_event.dart';
 
 abstract class GameEngine extends ChangeNotifier {
   GameState get state;
   void foodSelected(FoodSelectedEvent event);
+  void restart();
 }
 
 class NormalGameEngine extends GameEngine {
@@ -20,8 +21,20 @@ class NormalGameEngine extends GameEngine {
   @override
   void foodSelected(FoodSelectedEvent event) {
     if (event.change.isHealthy && !state.isFinished) {
-      _state = _state.copyWith(points: _state.points + 1);
+      _state = _state.copyWith(
+          points: event.change.isHealthy
+              ? _state.points + 1
+              : _state.points == 0
+                  ? 0
+                  : _state.points - 1);
+      notifyListeners();
     }
+  }
+
+  @override
+  void restart() {
+    _state = _state.copyWith(points: 0);
+    notifyListeners();
   }
 }
 
@@ -38,8 +51,13 @@ class TimedGameEngine extends GameEngine {
 
   @override
   void foodSelected(FoodSelectedEvent event) {
-    log('food selected on game engine.');
     start();
+    try {
+      Vibration.vibrate(
+        duration: event.change.isHealthy ? 250 : 650,
+        amplitude: event.change.isHealthy ? 30 : 60,
+      );
+    } catch (e) {}
     if (!state.isFinished) {
       _state = _state.copyWith(
           points: event.change.isHealthy
@@ -49,6 +67,14 @@ class TimedGameEngine extends GameEngine {
                   : _state.points - 1);
       notifyListeners();
     }
+  }
+
+  @override
+  void restart() {
+    _state =
+        _state.copyWith(points: 0, isFinished: false, remainingTime: timeLimit);
+    timeStream = null;
+    notifyListeners();
   }
 
   void start() {
